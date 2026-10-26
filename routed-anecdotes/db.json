@@ -15,25 +15,11 @@
       "id": "2"
     },
     {
-      "content": "test",
-      "author": "author",
-      "info": "123",
+      "content": "ttest",
+      "author": "1231",
+      "info": "42141",
       "votes": 0,
-      "id": "ZGKQSyuXWDk"
-    },
-    {
-      "content": "test number two",
-      "author": "123123",
-      "info": "wdadw",
-      "votes": 0,
-      "id": "Bdz4elovvOM"
-    },
-    {
-      "content": "testing one more time",
-      "author": "121",
-      "info": "2132",
-      "votes": 0,
-      "id": "CiU-Aqa8p0E"
+      "id": "pH_tJgA1_2E"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
