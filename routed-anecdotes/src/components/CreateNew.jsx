@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { useNavigate } from "react-router"
 import { useField } from "../hooks"
 
@@ -10,8 +9,19 @@ const CreateNew = ({ addAnecdote }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    addAnecdote({ content, author, info, votes: 0 })
+    addAnecdote({
+      content: content.inputProps.value,
+      author: author.inputProps.value,
+      info: info.inputProps.value,
+      votes: 0
+    })
     navigate("/")
+  }
+
+  const reset = () => {
+    content.reset()
+    author.reset()
+    info.reset()
   }
 
   return (
@@ -20,17 +30,18 @@ const CreateNew = ({ addAnecdote }) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...content.inputProps} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...author.inputProps} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...info.inputProps} />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
+        <button type="button" onClick={reset}>reset</button>
       </form>
     </div>
   )
