@@ -7,9 +7,9 @@ const CreateNew = ({ addAnecdote }) => {
   const info = useField('text')
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    addAnecdote({
+    await addAnecdote({
       content: content.inputProps.value,
       author: author.inputProps.value,
       info: info.inputProps.value,
