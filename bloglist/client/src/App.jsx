@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import {
@@ -13,11 +13,13 @@ import ErrorBoundary from './components/ErrorBoundary'
 import Notification from './components/Notification'
 import { useNotificationActions } from './stores/useNotificationStore'
 import { useBlogs, useBlogsActions } from './stores/useBlogsStore'
+import { useUser, useUserActions } from './stores/useUserStore'
 
 const App = () => {
   const blogs = useBlogs()
   const { setBlogs, addBlog, updateBlog, deleteBlog } = useBlogsActions()
-  const [user, setUser] = useState(null)
+  const currentUser = useUser()
+  const { setUser } = useUserActions()
   const { notify } = useNotificationActions()
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
     }
-  }, [])
+  }, [setUser])
 
   const handleLogin = async ({ username, password }) => {
     try {
@@ -84,8 +86,8 @@ const App = () => {
     <Router>
       <div style={{ display: 'flex', gap: '10px' }}>
         <Link to="/">home</Link>
-        { user && <Link to="/create">new blog</Link> }
-        { user ? <button onClick={handleLogout}>logout</button> : <Link to="/login">login</Link> }
+        { currentUser && <Link to="/create">new blog</Link> }
+        { currentUser ? <button onClick={handleLogout}>logout</button> : <Link to="/login">login</Link> }
       </div>
       <Notification />
       <ErrorBoundary>
@@ -93,7 +95,7 @@ const App = () => {
           <Route path='/' element={ <Home sortedBlogs={blogs} /> } />
           <Route path='/login' element={ <Login handleLogin={handleLogin} /> } />
           <Route path='/create' element={ <Create handleNewBlog={handleNewBlog}/> } />
-          <Route path='/blogs/:id' element={ <Blog blogs={blogs} user={user} handleLike={handleLike} handleDelete={handleDelete} /> } />
+          <Route path='/blogs/:id' element={ <Blog blogs={blogs} user={currentUser} handleLike={handleLike} handleDelete={handleDelete} /> } />
           <Route path='*' element={ <h2>404 Not Found</h2> } />
         </Routes>
       </ErrorBoundary>
