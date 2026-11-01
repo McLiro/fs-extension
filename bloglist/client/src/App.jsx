@@ -24,13 +24,12 @@ import Users from './components/Users'
 import User from './components/User'
 import { useNotificationActions } from './stores/useNotificationStore'
 import { useBlogs, useBlogsActions } from './stores/useBlogsStore'
-import { useUser, useUserActions } from './stores/useUserStore'
+import { useUser, getUser, saveUser, removeUser } from './services/persistentUser'
 
 const App = () => {
   const blogs = useBlogs()
   const { setBlogs, addBlog, updateBlog, deleteBlog } = useBlogsActions()
   const currentUser = useUser()
-  const { setUser } = useUserActions()
   const { notify } = useNotificationActions()
 
   useEffect(() => {
@@ -38,31 +37,23 @@ const App = () => {
   }, [setBlogs])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [setUser])
+    getUser()
+  }, [])
 
   const handleLogin = async ({ username, password }) => {
     try {
       const user = await loginService.login({ username, password })
 
-      window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
-      )
       blogService.setToken(user.token)
-      setUser(user)
+      saveUser(user)
     } catch {
       notify('invalid credentials', 'error')
     }
   }
 
   const handleLogout = () => {
-    setUser(null)
-    window.localStorage.clear()
+    removeUser()
+
     blogService.setToken(null)
   }
 
@@ -110,7 +101,7 @@ const App = () => {
         <AppBar position="static" elevation={0} sx={{ mb: 2, bgcolor: '#1976d2' }}>
           <Toolbar disableGutters>
             <Stack direction="row" spacing={2} alignitems="center">
-              <Button component={RouterLink} to="/" sx={{ color: 'white', textTransform: 'none' }}>home</Button>
+              <Button component={RouterLink} to="/" sx={{ color: 'white', textTransform: 'none' }}>blogs</Button>
               <Button component={RouterLink} to="/users" sx={{ color: 'white', textTransform: 'none' }}>users</Button>
               { currentUser && <Button component={RouterLink} to="/create" sx={{ color: 'white', textTransform: 'none' }}>new blog</Button> }
               { currentUser ? <Button variant="text" onClick={handleLogout} sx={{ color: 'white', textTransform: 'none' }}>logout</Button> : <Button component={RouterLink} to="/login" sx={{ color: 'white', textTransform: 'none' }}>login</Button> }
@@ -127,7 +118,7 @@ const App = () => {
           <Route path='/login' element={ <Login handleLogin={handleLogin} /> } />
           <Route path='/create' element={ <Create handleNewBlog={handleNewBlog}/> } />
           <Route path='/blogs/:id' element={ <Blog blogs={blogs} user={currentUser} handleLike={handleLike} handleDelete={handleDelete} handleComment={handleComment} /> } />
-          <Route path='*' element={ <Typography variant="h5">404 Not Found</Typography> } />
+          <Route path='*' element={ <Typography variant="h5">page not found</Typography> } />
         </Routes>
       </ErrorBoundary>
     </Router>
