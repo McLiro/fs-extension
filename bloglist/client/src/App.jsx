@@ -12,6 +12,7 @@ import Create from './components/Create'
 import ErrorBoundary from './components/ErrorBoundary'
 import Notification from './components/Notification'
 import Users from './components/Users'
+import User from './components/User'
 import { useNotificationActions } from './stores/useNotificationStore'
 import { useBlogs, useBlogsActions } from './stores/useBlogsStore'
 import { useUser, useUserActions } from './stores/useUserStore'
@@ -96,6 +97,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={ <Home sortedBlogs={blogs} /> } />
           <Route path='/users' element={ <Users /> } />
+          <Route path='/users/:id' element={ <User /> } />
           <Route path='/login' element={ <Login handleLogin={handleLogin} /> } />
           <Route path='/create' element={ <Create handleNewBlog={handleNewBlog}/> } />
           <Route path='/blogs/:id' element={ <Blog blogs={blogs} user={currentUser} handleLike={handleLike} handleDelete={handleDelete} /> } />
