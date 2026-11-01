@@ -1,6 +1,14 @@
 ### get all blogs
 GET http://localhost:3003/api/blogs
 
+### add an anonymous comment to a blog
+POST http://localhost:3003/api/blogs/6ab7d9a36496923afb7818f8/comments
+Content-Type: application/json
+
+{
+  "comment": "A useful post"
+}
+
 ### add a new blog
 POST http://localhost:3003/api/blogs
 Content-Type: application/json

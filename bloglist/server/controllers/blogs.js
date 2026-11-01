@@ -35,6 +35,25 @@ blogsRouter.post('', userExtractor, async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const { comment } = request.body
+
+  if (typeof comment !== 'string' || !comment.trim()) {
+    return response.status(400).json({ error: 'comment is required' })
+  }
+
+  const blog = await Blog.findById(request.params.id)
+  if (!blog) {
+    return response.status(404).end()
+  }
+
+  blog.comments.push(comment.trim())
+  await blog.save()
+  await blog.populate('user', USER_FIELDS)
+
+  response.status(201).json(blog)
+})
+
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
   const userId = request.user.id
 

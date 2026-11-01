@@ -76,6 +76,17 @@ const App = () => {
     updateBlog(updated)
   }
 
+  const handleComment = async (blog, comment) => {
+    try {
+      const updatedBlog = await blogService.comment(blog.id, comment)
+      updateBlog(updatedBlog)
+      return updatedBlog
+    } catch {
+      notify('failed to add comment', 'error')
+      return null
+    }
+  }
+
   const handleDelete = async (blog) => {
     if (!window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) return
 
@@ -100,7 +111,7 @@ const App = () => {
           <Route path='/users/:id' element={ <User /> } />
           <Route path='/login' element={ <Login handleLogin={handleLogin} /> } />
           <Route path='/create' element={ <Create handleNewBlog={handleNewBlog}/> } />
-          <Route path='/blogs/:id' element={ <Blog blogs={blogs} user={currentUser} handleLike={handleLike} handleDelete={handleDelete} /> } />
+          <Route path='/blogs/:id' element={ <Blog blogs={blogs} user={currentUser} handleLike={handleLike} handleDelete={handleDelete} handleComment={handleComment} /> } />
           <Route path='*' element={ <h2>404 Not Found</h2> } />
         </Routes>
       </ErrorBoundary>
