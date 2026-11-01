@@ -1,21 +1,25 @@
+import { Link as RouterLink } from 'react-router-dom'
 import {
-  BrowserRouter as Router,
-  Routes, Route, Link
-} from 'react-router-dom'
-import Blog from './Blog'
+  List,
+  ListItem,
+  ListItemButton,
+  Typography,
+} from '@mui/material'
 
 const Home = ({ sortedBlogs }) => {
   return (
     <>
-      <h2>Blogs</h2>
+      <Typography variant="h4">Blogs</Typography>
 
-      <ul>
+      <List>
         {sortedBlogs.map(blog => (
-          <li key={blog.id}>
-            <Link to={`/blogs/${blog.id}`}>{`${blog.title} by ${blog.author}`}</Link>
-          </li>
+          <ListItem key={blog.id} disablePadding>
+            <ListItemButton component={RouterLink} to={`/blogs/${blog.id}`} sx={{ color: 'blue' }}>
+              {`${blog.title} by ${blog.author}`}
+            </ListItemButton>
+          </ListItem>
         ))}
-      </ul>
+      </List>
     </>
   )
 }

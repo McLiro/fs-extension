@@ -1,3 +1,4 @@
+import { Alert } from '@mui/material'
 import { useNotification } from '../stores/useNotificationStore'
 
 const Notification = () => {
@@ -7,20 +8,14 @@ const Notification = () => {
     return null
   }
 
-  const style = {
-    color: type === 'error' ? 'red' : 'green',
-    background: 'lightgrey',
-    fontSize: 20,
-    borderStyle: 'solid',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-  }
-
   return (
-    <div style={style} className={type}>
+    <Alert
+      severity={type === 'error' ? 'error' : 'success'}
+      variant="filled"
+      sx={{ mb: 2 }}
+    >
       {message}
-    </div>
+    </Alert>
   )
 }
 

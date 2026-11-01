@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Box, Button, TextField, Typography } from '@mui/material'
 
 const BlogForm = ({ handleNewBlog }) => {
   const [title, setTitle] = useState('')
@@ -14,42 +15,30 @@ const BlogForm = ({ handleNewBlog }) => {
   }
 
   return (
-    <div>
-      <h2>Create new</h2>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label>
-            title:
-            <input
-              type="text"
-              value={title}
-              onChange={({ target }) => setTitle(target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            author:
-            <input
-              type="text"
-              value={author}
-              onChange={({ target }) => setAuthor(target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            url:
-            <input
-              type="text"
-              value={url}
-              onChange={({ target }) => setUrl(target.value)}
-            />
-          </label>
-        </div>
-        <button type="submit">Create</button>
-      </form>
-    </div>
+    <Box>
+      <Typography variant="h4">Create new</Typography>
+      <Box component="form" onSubmit={onSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 400 }}>
+        <TextField
+          label="title:"
+          type="text"
+          value={title}
+          onChange={({ target }) => setTitle(target.value)}
+        />
+        <TextField
+          label="author:"
+          type="text"
+          value={author}
+          onChange={({ target }) => setAuthor(target.value)}
+        />
+        <TextField
+          label="url:"
+          type="text"
+          value={url}
+          onChange={({ target }) => setUrl(target.value)}
+        />
+        <Button type="submit">Create</Button>
+      </Box>
+    </Box>
   )
 }
 

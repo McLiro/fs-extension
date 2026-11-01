@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { List, ListItem, Typography } from '@mui/material'
 import userService from '../services/users'
 
 const User = () => {
@@ -15,19 +16,19 @@ const User = () => {
       .finally(() => setLoading(false))
   }, [id])
 
-  if (loading) return <p>Loading user...</p>
-  if (error) return <p>Failed to load user.</p>
-  if (!user) return <p>User not found.</p>
+  if (loading) return <Typography>Loading user...</Typography>
+  if (error) return <Typography>Failed to load user.</Typography>
+  if (!user) return <Typography>User not found.</Typography>
 
   return (
     <>
-      <h2>{user.name}</h2>
-      <h3>added blogs</h3>
-      <ul>
+      <Typography variant="h4">{user.name}</Typography>
+      <Typography variant="h5">added blogs</Typography>
+      <List>
         {user.blogs.map(blog => (
-          <li key={blog.id}>{blog.title}</li>
+          <ListItem key={blog.id}>{blog.title}</ListItem>
         ))}
-      </ul>
+      </List>
     </>
   )
 }

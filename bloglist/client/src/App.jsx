@@ -3,8 +3,17 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import {
   BrowserRouter as Router,
-  Routes, Route, Link
+  Routes, Route, Link as RouterLink
 } from 'react-router-dom'
+import {
+  AppBar,
+  Button,
+  Container,
+  Link,
+  Stack,
+  Toolbar,
+  Typography,
+} from '@mui/material'
 import Blog from './components/Blog'
 import Home from './components/Home'
 import Login from './components/Login'
@@ -97,12 +106,18 @@ const App = () => {
 
   return (
     <Router>
-      <div style={{ display: 'flex', gap: '10px' }}>
-        <Link to="/">home</Link>
-        <Link to="/users">users</Link>
-        { currentUser && <Link to="/create">new blog</Link> }
-        { currentUser ? <button onClick={handleLogout}>logout</button> : <Link to="/login">login</Link> }
-      </div>
+      <Container maxWidth="md">
+        <AppBar position="static" elevation={0} sx={{ mb: 2, bgcolor: '#1976d2' }}>
+          <Toolbar disableGutters>
+            <Stack direction="row" spacing={2} alignitems="center">
+              <Button component={RouterLink} to="/" sx={{ color: 'white', textTransform: 'none' }}>home</Button>
+              <Button component={RouterLink} to="/users" sx={{ color: 'white', textTransform: 'none' }}>users</Button>
+              { currentUser && <Button component={RouterLink} to="/create" sx={{ color: 'white', textTransform: 'none' }}>new blog</Button> }
+              { currentUser ? <Button variant="text" onClick={handleLogout} sx={{ color: 'white', textTransform: 'none' }}>logout</Button> : <Button component={RouterLink} to="/login" sx={{ color: 'white', textTransform: 'none' }}>login</Button> }
+            </Stack>
+          </Toolbar>
+        </AppBar>
+      </Container>
       <Notification />
       <ErrorBoundary>
         <Routes>
@@ -112,7 +127,7 @@ const App = () => {
           <Route path='/login' element={ <Login handleLogin={handleLogin} /> } />
           <Route path='/create' element={ <Create handleNewBlog={handleNewBlog}/> } />
           <Route path='/blogs/:id' element={ <Blog blogs={blogs} user={currentUser} handleLike={handleLike} handleDelete={handleDelete} handleComment={handleComment} /> } />
-          <Route path='*' element={ <h2>404 Not Found</h2> } />
+          <Route path='*' element={ <Typography variant="h5">404 Not Found</Typography> } />
         </Routes>
       </ErrorBoundary>
     </Router>

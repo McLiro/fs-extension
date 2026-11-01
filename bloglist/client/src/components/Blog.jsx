@@ -1,5 +1,13 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import {
+  Box,
+  Button,
+  List,
+  ListItem,
+  TextField,
+  Typography,
+} from '@mui/material'
 
 const Blog = ({ blogs, user, handleLike, handleDelete, handleComment }) => {
   const id = useParams().id
@@ -28,29 +36,31 @@ const Blog = ({ blogs, user, handleLike, handleDelete, handleComment }) => {
 
   return (
     <>
-      <h3>{blog.author}: {blog.title}</h3>
-      <div>{blog.url}</div>
-      <div>
-        likes {blog.likes}
-        {user && <button onClick={() => handleLike(blog)}>like</button>}
-      </div>
-      <div>Added by {blog.user.name}</div>
-      {isOwner && <button onClick={() => onDelete(blog)}>remove</button>}
-      <h4>comments</h4>
+      <Typography variant="h5">{blog.author}: {blog.title}</Typography>
+      <Typography>{blog.url}</Typography>
+      <Box sx={{ display: 'flex', alignitems: 'center', gap: 1 }}>
+        <Typography component="span">likes {blog.likes}</Typography>
+        {user && <Button onClick={() => handleLike(blog)}>like</Button>}
+      </Box>
+      <Typography>Added by {blog.user.name}</Typography>
+      {isOwner && <Button onClick={() => onDelete(blog)}>remove</Button>}
+      <Typography variant="h6">comments</Typography>
       { user &&
-        <form onSubmit={onComment}>
-          <input
+        <Box component="form" onSubmit={onComment} sx={{ display: 'flex', gap: 1, mb: 2 }}>
+          <TextField
+            label="comment"
             type="text"
             value={comment}
             onChange={({ target }) => setComment(target.value)}
+            size="small"
           />
-          <button type="submit">add comment</button>
-        </form>}
-      <ul>
+          <Button type="submit">add comment</Button>
+        </Box>}
+      <List>
         {comments.map((comment, index) => (
-          <li key={`${comment}-${index}`}>{comment}</li>
+          <ListItem key={`${comment}-${index}`}>{comment}</ListItem>
         ))}
-      </ul>
+      </List>
     </>
   )
 }

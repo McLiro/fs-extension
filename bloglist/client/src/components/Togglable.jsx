@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle } from 'react'
-
+import { Box, Button } from '@mui/material'
 
 const Togglable = (props) => {
   const [visible, setVisible] = useState(false)
@@ -11,21 +11,20 @@ const Togglable = (props) => {
     setVisible(!visible)
   }
 
-
   useImperativeHandle(props.ref, () => {
     return { toggleVisibility }
   })
 
   return (
-    <div>
-      <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
-      </div>
-      <div style={showWhenVisible}>
+    <Box>
+      <Box style={hideWhenVisible}>
+        <Button onClick={toggleVisibility}>{props.buttonLabel}</Button>
+      </Box>
+      <Box style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
-      </div>
-    </div>
+        <Button onClick={toggleVisibility}>cancel</Button>
+      </Box>
+    </Box>
   )
 }
 
