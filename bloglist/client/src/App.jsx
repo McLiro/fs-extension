@@ -16,7 +16,7 @@ import { useBlogs, useBlogsActions } from './stores/useBlogsStore'
 
 const App = () => {
   const blogs = useBlogs()
-  const { setBlogs, addBlog } = useBlogsActions()
+  const { setBlogs, addBlog, updateBlog, deleteBlog } = useBlogsActions()
   const [user, setUser] = useState(null)
   const { notify } = useNotificationActions()
 
@@ -69,16 +69,14 @@ const App = () => {
       likes: blog.likes + 1
     })
 
-    setBlogs(prevBlogs =>
-      prevBlogs.map(b => (b.id === updated.id ? updated : b))
-    )
+    updateBlog(updated)
   }
 
   const handleDelete = async (blog) => {
     if (!window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) return
 
     await blogService.remove(blog.id)
-    setBlogs(prev => prev.filter(b => b.id !== blog.id))
+    deleteBlog(blog.id)
     notify(`removed ${blog.title}`)
   }
 
