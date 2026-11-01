@@ -11,6 +11,7 @@ import Login from './components/Login'
 import Create from './components/Create'
 import ErrorBoundary from './components/ErrorBoundary'
 import Notification from './components/Notification'
+import Users from './components/Users'
 import { useNotificationActions } from './stores/useNotificationStore'
 import { useBlogs, useBlogsActions } from './stores/useBlogsStore'
 import { useUser, useUserActions } from './stores/useUserStore'
@@ -86,6 +87,7 @@ const App = () => {
     <Router>
       <div style={{ display: 'flex', gap: '10px' }}>
         <Link to="/">home</Link>
+        <Link to="/users">users</Link>
         { currentUser && <Link to="/create">new blog</Link> }
         { currentUser ? <button onClick={handleLogout}>logout</button> : <Link to="/login">login</Link> }
       </div>
@@ -93,6 +95,7 @@ const App = () => {
       <ErrorBoundary>
         <Routes>
           <Route path='/' element={ <Home sortedBlogs={blogs} /> } />
+          <Route path='/users' element={ <Users /> } />
           <Route path='/login' element={ <Login handleLogin={handleLogin} /> } />
           <Route path='/create' element={ <Create handleNewBlog={handleNewBlog}/> } />
           <Route path='/blogs/:id' element={ <Blog blogs={blogs} user={currentUser} handleLike={handleLike} handleDelete={handleDelete} /> } />
