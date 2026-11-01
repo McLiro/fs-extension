@@ -12,16 +12,17 @@ import Create from './components/Create'
 import ErrorBoundary from './components/ErrorBoundary'
 import Notification from './components/Notification'
 import { useNotificationActions } from './stores/useNotificationStore'
+import { useBlogs, useBlogsActions } from './stores/useBlogsStore'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const blogs = useBlogs()
+  const { setBlogs, addBlog } = useBlogsActions()
   const [user, setUser] = useState(null)
-  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
   const { notify } = useNotificationActions()
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs))
-  }, [])
+  }, [setBlogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -55,7 +56,7 @@ const App = () => {
   const handleNewBlog = async ({ title, author, url }) => {
     try {
       const newBlog = await blogService.create({ title, author, url })
-      setBlogs(prevBlogs => prevBlogs.concat(newBlog))
+      addBlog(newBlog)
       notify(`a new blog ${newBlog.title} by ${newBlog.author} added.`)
     } catch {
       notify('failed to create new blog', 'error')
@@ -91,7 +92,7 @@ const App = () => {
       <Notification />
       <ErrorBoundary>
         <Routes>
-          <Route path='/' element={ <Home sortedBlogs={sortedBlogs} /> } />
+          <Route path='/' element={ <Home sortedBlogs={blogs} /> } />
           <Route path='/login' element={ <Login handleLogin={handleLogin} /> } />
           <Route path='/create' element={ <Create handleNewBlog={handleNewBlog}/> } />
           <Route path='/blogs/:id' element={ <Blog blogs={blogs} user={user} handleLike={handleLike} handleDelete={handleDelete} /> } />
